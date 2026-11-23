@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../../../shared/service/api.service';
 import { Iuser } from '../../../shared/models/user.model';
+import { AuthService } from '../../../shared/service/auth.service';
+import { CAN_DELETE, CAN_EDIT } from '../../../shared/models/role.model';
 
 @Component({
   selector: 'app-user-details',
@@ -16,8 +18,17 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private authService: AuthService
   ) { }
+
+  get canEdit(): boolean {
+    return this.authService.hasRole(CAN_EDIT);
+  }
+
+  get canDelete(): boolean {
+    return this.authService.hasRole(CAN_DELETE);
+  }
 
   ngOnInit(): void {
     // params (not snapshot) because this component is reused when switching users

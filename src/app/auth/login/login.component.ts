@@ -39,8 +39,9 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         localStorage.setItem('token', res.idToken);
         localStorage.setItem('userId', res.localId);
+        localStorage.setItem('role', res.role);
 
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/users']);
       },
       error: () => {
         this.errorMsg = 'Invalid email or password';

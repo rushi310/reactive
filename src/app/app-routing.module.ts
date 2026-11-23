@@ -13,6 +13,8 @@ import { ProductFormComponent } from './features/products/product-form/product-f
 
 import { AuthGuard } from './shared/guards/auth.guard';
 import { SignupComponent } from './auth/signup/signup.component';
+import { RoleGuard } from './shared/guards/role.guard';
+import { CAN_EDIT, CAN_VIEW } from './shared/models/role.model';
 
 const routes: Routes = [
 
@@ -35,15 +37,20 @@ const routes: Routes = [
 
   {
     path: 'users',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: CAN_VIEW },
     children: [
       {
         path: 'add',
-        component: UserFormComponent
+        component: UserFormComponent,
+        canActivate: [RoleGuard],
+        data: { roles: CAN_EDIT }
       },
       {
         path: 'edit/:id',
-        component: UserFormComponent
+        component: UserFormComponent,
+        canActivate: [RoleGuard],
+        data: { roles: CAN_EDIT }
       },
       {
         path: '',
@@ -61,7 +68,8 @@ const routes: Routes = [
 
   {
     path: 'products',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: CAN_VIEW },
     children: [
       {
         path: '',
@@ -69,11 +77,15 @@ const routes: Routes = [
       },
       {
         path: 'add',
-        component: ProductFormComponent
+        component: ProductFormComponent,
+        canActivate: [RoleGuard],
+        data: { roles: CAN_EDIT }
       },
       {
         path: 'edit/:id',
-        component: ProductFormComponent
+        component: ProductFormComponent,
+        canActivate: [RoleGuard],
+        data: { roles: CAN_EDIT }
       }
     ]
   },

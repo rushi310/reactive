@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/service/auth.service';
 import { Router } from '@angular/router';
+import { ROLES } from '../../shared/models/role.model';
 
 @Component({
   selector: 'app-signup',
@@ -13,6 +14,7 @@ export class SignupComponent implements OnInit {
 
   signupForm!: FormGroup;
   errorMsg = '';
+  roles = ROLES;
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +25,8 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['user', Validators.required]
     });
   }
 
@@ -33,9 +36,9 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    const { email, password } = this.signupForm.value;
+    const { email, password, role } = this.signupForm.value;
 
-    this.authService.signup(email, password).subscribe({
+    this.authService.signup(email, password, role).subscribe({
       next: (res) => {
         alert('Account created successfully!');
 

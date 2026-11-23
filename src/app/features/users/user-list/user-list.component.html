@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <strong>Users ({{ users.length }})</strong>
-        <button class="btn btn-primary btn-sm" (click)="onAddUser()">
+        <button *ngIf="canEdit" class="btn btn-primary btn-sm" (click)="onAddUser()">
             Add User
         </button>
     </div>

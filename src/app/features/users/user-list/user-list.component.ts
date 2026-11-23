@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../../../shared/service/api.service';
 import { Iuser } from '../../../shared/models/user.model';
+import { AuthService } from '../../../shared/service/auth.service';
+import { CAN_EDIT } from '../../../shared/models/role.model';
 
 @Component({
   selector: 'app-user-list',
@@ -18,8 +20,13 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) { }
+
+  get canEdit(): boolean {
+    return this.authService.hasRole(CAN_EDIT);
+  }
 
   ngOnInit(): void {
     this.getAllUsers();

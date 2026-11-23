@@ -30,9 +30,9 @@
             </div>
         </div>
     </div>
-    <div class="card-footer text-right">
-        <button class="btn btn-success mr-2" (click)="onEdit()">Edit</button>
-        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    <div class="card-footer text-right" *ngIf="canEdit || canDelete">
+        <button *ngIf="canEdit" class="btn btn-success mr-2" (click)="onEdit()">Edit</button>
+        <button *ngIf="canDelete" class="btn btn-danger" (click)="onDelete()">Delete</button>
     </div>
 </div>
 <ng-template #loading>

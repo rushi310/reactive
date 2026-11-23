@@ -3,10 +3,12 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { from, Observable, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { Role } from '../models/role.model';
 
 interface Account {
   email: string;
   passwordHash: string;
+  role: Role;
   createdAt: string;
 }
 
@@ -32,14 +34,16 @@ export class AuthService {
             if (!account || account.passwordHash !== hash) {
               return throwError(() => this.authError('INVALID_LOGIN_CREDENTIALS'));
             }
-            return [{ idToken: this.createToken(), localId: key, email: account.email }];
+            // Accounts created before roles existed default to 'user'
+            const role: Role = account.role || 'user';
+            return [{ idToken: this.createToken(), localId: key, email: account.email, role }];
           })
         )
       )
     );
   }
 
-  signup(email: string, password: string): Observable<any> {
+  signup(email: string, password: string, role: Role = 'user'): Observable<any> {
     const key = this.emailKey(email);
     const url = `${this.baseURL}/accounts/${key}.json`;
     return this.http.get<Account | null>(url).pipe(
@@ -52,11 +56,12 @@ export class AuthService {
             const account: Account = {
               email: email.trim().toLowerCase(),
               passwordHash,
+              role,
               createdAt: new Date().toISOString()
             };
             return this.http.put(url, account);
           }),
-          map(() => ({ localId: key, email }))
+          map(() => ({ localId: key, email, role }))
         );
       })
     );
@@ -65,6 +70,21 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+  }
+
+  getRole(): Role | null {
+    const role = localStorage.getItem('role') as Role | null;
+    // Sessions from before roles existed: treat as plain 'user'
+    if (!role && localStorage.getItem('token')) {
+      return 'user';
+    }
+    return role;
+  }
+
+  hasRole(roles: Role[]): boolean {
+    const role = this.getRole();
+    return !!role && roles.includes(role);
   }
 
   // Realtime DB keys cannot contain . # $ [ ]
