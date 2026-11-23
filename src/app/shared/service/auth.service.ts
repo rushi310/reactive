@@ -12,11 +12,7 @@ interface Account {
   createdAt: string;
 }
 
-/**
- * Simple auth backed by Firebase Realtime Database (no API key needed).
- * Accounts are stored at /accounts/{emailKey}.json.
- * NOTE: suitable for practice/test projects only — not real security.
- */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +30,7 @@ export class AuthService {
             if (!account || account.passwordHash !== hash) {
               return throwError(() => this.authError('INVALID_LOGIN_CREDENTIALS'));
             }
-            // Accounts created before roles existed default to 'user'
+
             const role: Role = account.role || 'user';
             return [{ idToken: this.createToken(), localId: key, email: account.email, role }];
           })
@@ -87,7 +83,7 @@ export class AuthService {
     return !!role && roles.includes(role);
   }
 
-  // Realtime DB keys cannot contain . # $ [ ]
+ 
   private emailKey(email: string): string {
     return email.trim().toLowerCase().replace(/[.#$\[\]]/g, ',');
   }
@@ -105,7 +101,7 @@ export class AuthService {
     return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
-  // Same shape as Firebase errors, so components can read err.error.error.message
+
   private authError(message: string) {
     return { error: { error: { message } } };
   }

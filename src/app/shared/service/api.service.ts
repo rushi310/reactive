@@ -13,12 +13,12 @@ export class ApiService {
 
   private baseURL = environment.BASE_URL;
 
-  // Emits when the user list should be reloaded (e.g. after delete)
+
   usersChanged$ = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
-  // Users
+
 
   getAllUsers(): Observable<any> {
     return this.http.get(`${this.baseURL}/users.json`);

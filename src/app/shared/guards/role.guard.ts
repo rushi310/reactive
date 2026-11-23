@@ -3,10 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/r
 import { AuthService } from '../service/auth.service';
 import { Role } from '../models/role.model';
 
-/**
- * Allows a route only if the logged-in user's role is listed in
- * the route's `data: { roles: [...] }`. Routes without `roles` are open.
- */
+
 @Injectable({
   providedIn: 'root'
 })
