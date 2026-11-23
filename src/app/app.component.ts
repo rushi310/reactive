@@ -1,4 +1,7 @@
+
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'reactive';
+
+  showNavbar = true;
+
+  constructor(private router: Router) {
+
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe((event: any) => {
+
+        this.showNavbar =
+          event.urlAfterRedirects !== '/login' &&
+          event.urlAfterRedirects !== '/signup';
+
+      });
+
+  }
+
 }

@@ -1,10 +1,7 @@
 <div class="card" *ngIf="user; else loading">
-
     <div class="card-body">
-
         <div class="d-flex align-items-center mb-4">
             <img [src]="user.imageUrl" [alt]="user.name" class="profile-img mr-4">
-
             <div>
                 <h3 class="mb-1">{{ user.name }}</h3>
                 <p class="mb-1 text-muted">{{ user.role }} · {{ user.experience }} yrs experience</p>
@@ -13,12 +10,9 @@
                 </span>
             </div>
         </div>
-
         <p>{{ user.description }}</p>
-
         <h5 class="mt-4">Skills</h5>
         <span *ngFor="let skill of user.skills || []" class="badge badge-info mr-2 p-2">{{ skill }}</span>
-
         <div class="row mt-4">
             <div class="col-md-6">
                 <h5>Current Address</h5>
@@ -27,7 +21,6 @@
                     {{ a.country }} - {{ a.zipcode }}
                 </p>
             </div>
-
             <div class="col-md-6">
                 <h5>Permanent Address</h5>
                 <p *ngIf="user.permanentAddress as a">
@@ -36,16 +29,12 @@
                 </p>
             </div>
         </div>
-
     </div>
-
     <div class="card-footer text-right">
         <button class="btn btn-success mr-2" (click)="onEdit()">Edit</button>
         <button class="btn btn-danger" (click)="onDelete()">Delete</button>
     </div>
-
 </div>
-
 <ng-template #loading>
     <div class="text-center text-muted mt-5">Loading user...</div>
 </ng-template>

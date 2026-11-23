@@ -40,6 +40,17 @@ export class ApiService {
     return this.http.delete(`${this.baseURL}/users/${id}.json`);
   }
 
+  activateUser(id:string):Observable<any>{
+    return this.http.patch(`${this.baseURL}/users/${id}.json`,
+      {status:true}
+    );
+  }
+  deactivateUser(id:string):Observable<any>{
+    return this.http.patch(`${this.baseURL}/users/${id}.json`,
+      {status:false}
+    );
+  }
+
   // Products
 
   getAllProduct(): Observable<any> {

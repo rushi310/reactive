@@ -39,8 +39,6 @@ export class UserListComponent implements OnInit, OnDestroy {
             id: key
           }))
           : [];
-
-
         if (!this.route.firstChild && this.users.length) {
           this.router.navigate(['/users', this.users[0].id]);
         }
@@ -53,4 +51,21 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/users/add']);
   }
 
+  onActivateUser(id:string):void{
+    this,this.apiService.activateUser(id).subscribe({
+      next:()=>{
+        this.getAllUsers();
+      },
+      error:(err)=> console.log(err)
+    });
+  }
+
+  onDeactivateUser(id:string):void{
+    this.apiService.deactivateUser(id).subscribe({
+      next:()=>{
+        this.getAllUsers();
+      },
+      error:(err)=>console.log(err)
+    })
+  }
 }
